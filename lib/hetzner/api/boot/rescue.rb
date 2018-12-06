@@ -7,8 +7,10 @@ module Hetzner
         # see <em>boot?</em> method to query the API for available options
         #
         # defaults to 64bit Linux
-        def enable_rescue!(ip, os = 'linux', arch = '64')
-          perform_post "/boot/#{ip}/rescue", :query => { :os => os, :arch => arch }
+        def enable_rescue!(ip, os = 'linux', arch = '64', sshkey=nil)
+          query = { :os => os, :arch => arch }
+          query['ssh_keys'] = [ sshkey ] if sshkey
+          perform_post "/boot/#{ip}/rescue", :query => query
         end
         
         # disables the rescue system for a given IP address/server
